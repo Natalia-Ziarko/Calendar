@@ -1,9 +1,11 @@
 <?php require_once dirname(__FILE__) .'/../config.php';?>
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="eng" lang="eng">
     
 <head>
     <meta charset="utf-8" />
+    <script src="main.js"></script> <!-- Link to the external JavaScript file -->
+    
     <title>Sports Events Calendar</title>
     
     <style>
@@ -65,6 +67,32 @@
         .event-item.active {
             background-color: #d1ecf1;
             border-color: #bee5eb;
+        }
+        
+        /* Add space between the search bar and event list */
+        .search-filter {
+            margin: 0 10px 15px 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* gap between the search bar and the button */
+        }
+
+        .search-filter input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            flex: 1;
+        }
+
+        .search-filter button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 20%;
         }        
     </style>
 </head>
@@ -82,14 +110,23 @@
         Sports Events Calendar
     </div>
 
-    <div class="main-container">
-        <!-- Events List -->
-        <div class="events-list">
-            <h2>Events</h2>
+<div class="main-container">
+    <!-- Events List -->
+    <div class="events-list">
+        <h2>Events</h2>
+
+        <!-- Search Filter -->
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="Search event..." oninput="filterEvents()" />
+            <button onclick="showNotWorkingMessage()">Search</button>
+        </div>
+
+        <!-- Event List -->
+        <div id="eventList">
             <?php if (!empty($all_events_details)): ?>
-                <?php foreach ($all_events_details as $eventWrapper): ?>
+                <?php foreach ($all_events_details as $event_array): ?>
                     <?php 
-                        $event = $eventWrapper[0]; // Access the actual event data
+                    $event = $event_array[0]; // Access the actual event data row
                     ?>
                     <div class="event-item" 
                          onclick="selectEvent(this, <?= htmlspecialchars(json_encode($event, JSON_HEX_APOS | JSON_HEX_QUOT)) ?>)">
@@ -100,49 +137,18 @@
                 <div>No events available</div>
             <?php endif; ?>
         </div>
-
-        <!-- Event Details -->
-        <div class="event-details" id="event-details">
-            <h2>Details</h2>
-            <p>Select an event to see details.</p>
-        </div>
     </div>
+
+    <!-- Event Details -->
+    <div class="event-details" id="event-details">
+        <h2>Details</h2>
+        <p>Select an event to see details.</p>
+    </div>
+</div>
 
     <div class="footer">
         Created by Natalia Ziarko, 2024
     </div>
-
-    <script>
-        function selectEvent(element, event) {
-            // Remove 'active' class from previously selected event
-            const activeEvent = document.querySelector('.event-item.active');
-            if (activeEvent) {
-                activeEvent.classList.remove('active');
-            }
-
-            // Add 'active' class to the clicked event
-            element.classList.add('active');
-
-            // Update the details section
-            showEventDetails(event);
-        }
-    
-        function showEventDetails(event) {
-            const detailsDiv = document.getElementById('event-details');
-            detailsDiv.innerHTML = `
-                <h2>Details</h2>
-                <table>
-                    <tr><th>Name</th><td>${event.event_name ?? 'N/A'}</td></tr>
-                    <tr><th>Description</th><td>${event.event_description ?? 'N/A'}</td></tr>
-                    <tr><th>Event type</th><td>${event.event_type ?? 'N/A'}</td></tr>
-                    <tr><th>Sport</th><td>${event.event_sport ?? 'N/A'}</td></tr>
-                    <tr><th>Time</th><td>${event.event_start_date ?? 'N/A'}</td></tr>
-                    <tr><th>Place</th><td>${event.event_venue ?? 'N/A'}</td></tr>
-                    <tr><th>Teams</th><td>${(event.event_team_short_name_1 ?? 'N/A') + ' - ' + (event.event_team_short_name_2 ?? 'N/A')}</td></tr>
-                </table>
-            `;
-        }
-    </script>
     
     <div class="footer">
         Created by Natalia Ziarko, 2024
