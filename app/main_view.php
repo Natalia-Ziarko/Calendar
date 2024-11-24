@@ -37,6 +37,40 @@
         Sports events calendar
     </div>
     
+    <table>
+        <?php if (!empty($last_event_details)): ?>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Event type</th>
+              <th>Sport</th>
+              <th>Time</th>
+              <th>Place</th>
+              <th>Teams</th>
+            </tr>
+        
+            <?php foreach ($last_event_details as $event): ?>
+                <tr>
+                  <td><?= htmlspecialchars($event['event_name'] ?? '') ?></td>
+                  <td><?= htmlspecialchars($event['event_description'] ?? '') ?></td>
+                  <td><?= htmlspecialchars($event['event_type'] ?? '') ?></td>
+                  <td><?= htmlspecialchars($event['event_sport'] ?? '') ?></td>
+                  <td><?= htmlspecialchars($event['event_start_date'] ?? '') ?></td>
+                  <td><?= htmlspecialchars($event['event_venue'] ?? '') ?></td>
+                  <td><?= htmlspecialchars(
+                          ($event['event_team_short_name_1'] ?? 'N/A')
+                          . ' - ' 
+                          . ($event['event_team_short_name_2'] ?? 'N/A')) ?>
+                  </td>
+                </tr>
+            <?php endforeach; ?>        
+        <?php else: ?>
+            <tr>
+                <td colspan="7">No event found</td>
+            </tr>
+        <?php endif; ?>
+    </table>
+    
     <div class="footer">
         Created by Natalia Ziarko, 2024
     </div>
