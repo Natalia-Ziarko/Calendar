@@ -1,10 +1,10 @@
 <?php
-    require_once dirname(__FILE__) .'/../config.php';
-
-    const ERROR_CLIENT_MSG = 'An error occurred while processing your request';
-    const DONE_CLIENT_MSG = 'Your request was processed succesfully';
+    require_once dirname(__FILE__) .'/../config.php'; // Include config.php to access $db connection
     
+    // Retrieve the 'message' parameter from the URL via GET request
     $message_get = filter_input(INPUT_GET, 'message');
+    
+    // Check if the 'message' parameter is provided in the URL
     if ($message_get !== null) {
         if ($message_get === 'true') {
             header("Location: /calendar/app/main.php");
@@ -15,6 +15,7 @@
         }
     }
 ?>
+
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     
