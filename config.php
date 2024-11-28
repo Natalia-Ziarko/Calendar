@@ -5,6 +5,18 @@ define('_APP_ROOT', '/calendar');
 define('_APP_URL', _SERVER_URL._APP_ROOT);
 define("_ROOT_PATH", dirname(__FILE__));
 
+const MSG_IF_NULL_RETURN = 'N/A';
+
+const MSG_IF_ERROR = 'false';
+const MSG_IF_DONE = 'true';
+
+const ERROR_CLIENT_MSG = 'An error occurred while processing your request';
+const DONE_CLIENT_MSG = 'Your request was processed succesfully';
+
+/**
+ * Database connection configuration
+ */
+
 class Config extends \ArrayObject {
     public $db_type;
     public $db_server;
@@ -49,5 +61,13 @@ class Database {
     }
 }
 
+// Initialize with the configuration
 Database::init($conf);
+
+// Establish the database connection
 $db = Database::connectDB();
+
+// Check the database connection - if null then die
+if ($db === null) {
+    die("Database connection failed");
+}
